@@ -1,4 +1,4 @@
 travelmarx-blog
 ===============
 
-travelmarx blog supporting code, files, and projects
+travelmarx blog supporting code, files, and projects repository
