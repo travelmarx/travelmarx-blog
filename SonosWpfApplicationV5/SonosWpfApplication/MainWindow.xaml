@@ -1,0 +1,69 @@
+﻿<Window x:Class="SonosWpfApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="My Sonos" Height="450" Width="700" Icon="SonosWpfApplication.ico">
+    <StackPanel Height="450" Width="700"  Background="#FF9CAAC1">
+        <ListView Name="ZoneList" Height="150" HorizontalAlignment="Left" Margin="12,12,0,0" 
+                    VerticalAlignment="Top" Width="660" ItemsSource="{Binding ZoneCollection}">
+            <ListView.View>
+                <GridView >
+                    <GridViewColumn Width="200" Header="Zone Name" DisplayMemberBinding="{Binding ZoneName}" />
+                    <GridViewColumn Width="50" Header="Master" DisplayMemberBinding="{Binding ZoneMaster}" />
+                    <GridViewColumn Width="150" Header="Address" DisplayMemberBinding="{Binding ZoneAddress}" />
+                    <GridViewColumn Width="70" Header="Type" DisplayMemberBinding="{Binding ZoneType}" />
+                    <GridViewColumn Width="190" Header="UUID" DisplayMemberBinding="{Binding ZoneID}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView Name="PlaylistList" Height="160" HorizontalAlignment="Left" Margin="12,12,0,0" 
+                  VerticalAlignment="Top" Width="660" ItemsSource="{Binding PlaylistCollection}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="350" Header="Playlist Name" DisplayMemberBinding="{Binding PlaylistName}" />
+                    <GridViewColumn Width="75" Header="Queue" DisplayMemberBinding="{Binding PlaylistSQ}" />
+                    <GridViewColumn Width="75" Header="Items" DisplayMemberBinding="{Binding NumItems}" />
+                    <GridViewColumn Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Save" Height="23" Name="PlaylistButton" Click="playlistButton_Click" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="M3U" Height="23" Name="M3UButton" Click="M3UButton_Click" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Name="ControlsGrid" HorizontalAlignment="Left" Margin="12,12,0,0" 
+                  VerticalAlignment="Top" Width="660" Height="25">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/> 
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="100*" />
+                <ColumnDefinition Width="120*"/>
+                <ColumnDefinition Width="200*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Discover" Height="23" Name="DiscoverButton" Width="100" Click="Discover_Click" />
+            <Button Grid.Column="1" Content="Save All Playlists" Height="23" Name="SaveButton" Width="100" Click="SaveAll_Click"  />
+            <Button Grid.Column="2" Content="Import Playlist" Height="23" Name="ImportButton" Width="100" Click="Import_Click" />
+            <TextBlock Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center">Master Zone To Use:</TextBlock>
+            <ComboBox Name="MasterZoneDropDown" Grid.Column="4" Height="23" HorizontalAlignment="Left" 
+                      VerticalAlignment="Top" Width="150" Margin="5 0 0 0" ItemsSource="{Binding MasterZones}" SelectedIndex="0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=ZoneName}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        <TextBlock Name="Message" Margin="12,12,0,0" FontStyle="Italic">
+            Click "Discover" to start.
+        </TextBlock>
+    </StackPanel>
+</Window>
