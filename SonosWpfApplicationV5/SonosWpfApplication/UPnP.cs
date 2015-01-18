@@ -184,19 +184,29 @@ namespace UPnP
                 {
                     if (!UPnP.Discovery.ZoneTable[zone].ToLower().Contains("bridge"))
                     {
-                        string path = "/MediaRenderer/AVTransport/Control";
-                        Uri uri = new Uri(zone);
-                        string host = uri.Scheme + "://" + uri.Host + ":" + uri.Port.ToString();
-                        string soapAction = "uurn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo";
-                        string soapBody = "<u:GetPositionInfo xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">" +
-                                              "<InstanceID>0</InstanceID>" +
-                                              "<Channel>Master</Channel>" +
-                                          "</u:GetPositionInfo>";
-                        XmlDocument resp = SOAPRequest(path, host, soapBody, soapAction);
+                        try
+                        {
+                            string path = "/MediaRenderer/AVTransport/Control";
+                            Uri uri = new Uri(zone);
+                            string host = uri.Scheme + "://" + uri.Host + ":" + uri.Port.ToString();
+                            string soapAction = "uurn:schemas-upnp-org:service:AVTransport:1#GetPositionInfo";
+                            string soapBody = "<u:GetPositionInfo xmlns:u=\"urn:schemas-upnp-org:service:AVTransport:1\">" +
+                                                  "<InstanceID>0</InstanceID>" +
+                                                  "<Channel>Master</Channel>" +
+                                              "</u:GetPositionInfo>";
+                            XmlDocument resp = SOAPRequest(path, host, soapBody, soapAction);
 
-                        string trackURI = resp.SelectSingleNode("//TrackURI").InnerText;
-                        // check SOAP for TrackURI for x-rincon:RINCON
-                        UPnP.Discovery.ZoneMasters[zone] = (!trackURI.StartsWith("x-rincon:RINCON") | trackURI == String.Empty);
+                            string trackURI = resp.SelectSingleNode("//TrackURI").InnerText;
+                            // check SOAP for TrackURI for x-rincon:RINCON
+                            UPnP.Discovery.ZoneMasters[zone] = (!trackURI.StartsWith("x-rincon:RINCON") | trackURI == String.Empty);
+                        }
+                        catch (Exception e)
+                        {
+                            // It was reported that some devices throw an error as reported by a reader, adding try to catch this.
+                            // Currently set message but don't use it. Consider surfacing in .xaml
+                            string err = e.Message;
+                            UPnP.Discovery.ZoneMasters[zone] = false;
+                        }
                     }
                     else
                     {
