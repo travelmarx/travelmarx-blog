@@ -24,7 +24,9 @@ class TestClass(object):
         """ Docstring of function foo.
 
         :param arg1: Describing the first parameter of foo().
+        :type arg1: bool
         :param arg2: Describing the second parameter of foo().
+        :type arg2: list
 
         .. remarks::
         
